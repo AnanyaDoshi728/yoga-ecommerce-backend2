@@ -9,6 +9,16 @@ const addOrder = async (req,res) => {
     }
 }
 
+const getOrders = async (req,res) => {
+    try{
+        const allOrders = await Order.find()
+        res.status(201).json({allOrders})
+    }catch(error){
+        res.status(500).json({message: error})
+    }
+}
+
 module.exports = {
-    addOrder
+    addOrder,
+    getOrders
 }
