@@ -7,7 +7,7 @@ const cors = require('cors')
 
 
 const productRoutes = require('./routes/Product')
-
+const orderRoutes = require('./routes/Order')
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 
 app.use('/api/admin',productRoutes)
-
+app.use('/api/admin',orderRoutes)
 
 
  
