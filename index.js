@@ -20,12 +20,9 @@ app.use(bodyParser.json());
 //routes 
 app.use('/api/admin',productRoutes)
 app.use('/api/admin',orderRoutes)
-app.use('/api/admin',userRoutes)
-
- 
+app.use('/api/admin',userRoutes) 
 
 const port = process.env.PORT || 8080;
-
 
 mongoose
   .connect(process.env.DATABASE,{ useNewUrlParser: true ,useUnifiedTopology: true}
