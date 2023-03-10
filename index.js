@@ -8,7 +8,6 @@ const cors = require('cors')
 
 const productRoutes = require('./routes/Product')
 const orderRoutes = require('./routes/Order')
-const userRoutes = require('./routes/User')
 
 const app = express();
 
@@ -20,7 +19,6 @@ app.use(bodyParser.json());
 //routes 
 app.use('/api/admin',productRoutes)
 app.use('/api/admin',orderRoutes)
-app.use('/api/admin',userRoutes) 
 
 const port = process.env.PORT || 8080;
 
