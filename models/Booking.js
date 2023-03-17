@@ -34,12 +34,12 @@ const bookingsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    individualRoomCost:{
-        type: Number,
+    typeOfRoom: {
+        type: String,
         required: true
     },
-    sharedRoomCost: {
-        type: Number,
+    typeOfRetreat:{
+        type:String,
         required: true
     },
     totalCost: {
