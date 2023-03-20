@@ -33,7 +33,8 @@ const ordersSchema = new mongoose.Schema({
         type: [
             { name: String,
               price: Number,
-              quantity: Number  
+              quantity: Number,
+              productImage: String
             }
         ],
         required: true
