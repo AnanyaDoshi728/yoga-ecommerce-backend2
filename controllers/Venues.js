@@ -11,7 +11,7 @@ const addVenue = async (req,res) => {
 
 const getVenues = async (req,res) => {
     try{
-        const allBookings = await Venues.find()
+        const allBookings = await Venues.find({name: req.body.name})
         res.status(201).json({allBookings})
     }catch(error){
         res.status(500).json({message: error})
