@@ -18,15 +18,18 @@ const getVenues = async (req,res) => {
     }
 }
 
-const getVenueByName = async (req,res) => {
-    try{
-        const venues = await Venues.findOne({ name: req.body.name }).select('datesBooked');
-        res.status(201).json({datesBooked: venues.datesBooked})
+const getVenueByName = async (req, res) => {
+    try {
+      const { name } = req.query;
+      const venue = await Venues.findOne({ name });
+      if (!venue) {
+        return res.status(404).json({ message: `Venue with name ${name} not found` });
+      }
+      res.status(200).json({ datesBooked: venue.datesBooked });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-    catch(error){
-        res.status(500).json({message: error})
-    }
-}
+  };
 
 const updateDate = async (req,res) => {
     try{
