@@ -11,9 +11,19 @@ const addVenue = async (req,res) => {
 
 const getVenues = async (req,res) => {
     try{
-        const allBookings = await Venues.findOne({name: req.body.name})
+        const allBookings = await Venues.find({})
         res.status(201).json({allBookings})
     }catch(error){
+        res.status(500).json({message: error})
+    }
+}
+
+const getVenueByName = async (req,res) => {
+    try{
+        const venues = await Venues.findOne({ name: req.body.name }).select('datesBooked');
+        res.status(201).json({datesBooked: venues.datesBooked})
+    }
+    catch(error){
         res.status(500).json({message: error})
     }
 }
@@ -35,5 +45,6 @@ const updateDate = async (req,res) => {
 module.exports = {
     addVenue,
     getVenues,
+    getVenueByName,
     updateDate
 }
