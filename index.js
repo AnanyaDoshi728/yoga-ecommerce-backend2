@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const Order = require('./models/Order')
+const Booking = require('./models/Booking')
 
 const storeItems = new Map([
   [1, { priceInCents: 10000, name: "Learn React Today" }],
@@ -43,33 +44,15 @@ app.use("/api/admin", bookingRoutes);
 app.use("/api/admin", venueRoutes);
 
 app.post("/api/admin/test-checkout", async (req, res) => {
-  // console.log("gibberish")
+  const booking = await Booking.create(req.body.item.bookingData)
   try {
     console.log('body: ',req.body.bookingData)
-    // Create a checkout session with Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      // For each item use the id to get it's information
-      // Take that information and convert it to Stripe's format
-
-      // format for reference
-      // line_items: req.body.items.map(({ id, quantity }) => {
-      //   const storeItem = storeItems.get(id);
-      //   return {
-      //     price_data: {
-      //       currency: "inr",
-      //       product_data: {
-      //         name: storeItem.name,
-      //       },
-      //       unit_amount: storeItem.priceInCents,
-      //     },
-      //     quantity: quantity,
-      //   };
-      // }),
       line_items: [
         {
           price_data: {
-            currency: 'inr',
+            currency: 'eur',
             unit_amount: req.body.item.price,
             product_data: {
               name: req.body.item.name,
@@ -80,16 +63,12 @@ app.post("/api/admin/test-checkout", async (req, res) => {
       ],
 
       mode: "payment",
-      // Set a success and cancel URL we will send customers to
-      // These must be full URLs
-      // In the next section we will setup CLIENT_URL
-      success_url: `${process.env.CLIENT_URL}/success`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `${process.env.CLIENT_URL}/success/?id=${booking._id}`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel/?id=${booking._id}`,
     });
 
     res.json({ url: session.url });
   } catch (e) {
-    // If there is an error send it to the client
     res.status(500).json({ error: e.message });
   }
 });
@@ -106,10 +85,9 @@ app.post("/api/admin/place-order", async (req, res) => {
       line_items: req.body.orderedItems.map((item) => {
           return {
             price_data: {
-              currency: "inr",
+              currency: "eur",
               product_data: {
                 name: item.name,
-                // image: item.productImage
               },
               unit_amount: item.price,
             },
@@ -120,8 +98,6 @@ app.post("/api/admin/place-order", async (req, res) => {
       success_url: `${process.env.CLIENT_URL}/successOrder/?id=${order._id}`,
       cancel_url: `${process.env.CLIENT_URL}/cancelOrder/id=${order._id}`,
     });
-
-   
 
     res.json({ url: session.url });
   } catch (e) {
