@@ -21,11 +21,11 @@ const venueRoutes = require("./routes/Venues");
 const app = express();
 
 // const cors = require("cors")
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//   })
+// );
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
