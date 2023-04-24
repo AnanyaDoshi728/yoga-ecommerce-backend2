@@ -38,6 +38,10 @@ const ordersSchema = new mongoose.Schema({
             }
         ],
         required: true
+    },
+    paymentMade: {
+        type: Boolean,
+        default: false
     }
 })
 

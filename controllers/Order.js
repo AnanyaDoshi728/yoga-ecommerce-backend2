@@ -27,8 +27,21 @@ const getOrderByEmail = async (req,res) => {
     }
 }
 
+const updateOrderPaymentMade = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const order = await Order.findByIdAndUpdate(id, { paymentMade: true });
+      res.status(200).json(order);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error updating paymentMade property." });
+    }
+  };
+  
+
 module.exports = {
     addOrder,
     getOrders,
-    getOrderByEmail
+    getOrderByEmail,
+    updateOrderPaymentMade
 }

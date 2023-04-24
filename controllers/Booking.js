@@ -18,7 +18,19 @@ const getBookings = async (req,res) => {
     }
 }
 
+const updateBookingPaymentMade = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const booking = await Booking.findByIdAndUpdate(id, { paymentMade: true });
+      res.status(200).json(booking);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error updating paymentMade property." });
+    }
+  };
+
 module.exports = {
     addBooking,
-    getBookings
+    getBookings,
+    updateBookingPaymentMade
 }

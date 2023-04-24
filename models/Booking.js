@@ -49,6 +49,10 @@ const bookingsSchema = new mongoose.Schema({
    startDate: {
     type: String,
     required: true 
+   },
+   paymentMade: {
+       type: Boolean,
+       default: false
    }
 })
 
