@@ -5,8 +5,8 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
-const Order = require('./models/Order')
-const Booking = require('./models/Booking')
+const Order = require("./models/Order");
+const Booking = require("./models/Booking");
 
 const storeItems = new Map([
   [1, { priceInCents: 10000, name: "Learn React Today" }],
@@ -23,7 +23,11 @@ const app = express();
 // const cors = require("cors")
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://yoga-site-ecommerce.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://yoga-site-ecommerce.vercel.app",
+      "https://yoga-site-six.vercel.app",
+    ],
   })
 );
 // app.use(
@@ -49,15 +53,15 @@ app.use("/api/admin", bookingRoutes);
 app.use("/api/admin", venueRoutes);
 
 app.post("/api/admin/test-checkout", async (req, res) => {
-  const booking = await Booking.create(req.body.item.bookingData)
+  const booking = await Booking.create(req.body.item.bookingData);
   try {
-    console.log('body: ',req.body.bookingData)
+    console.log("body: ", req.body.bookingData);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
-            currency: 'eur',
+            currency: "eur",
             unit_amount: req.body.item.price,
             product_data: {
               name: req.body.item.name,
@@ -78,27 +82,25 @@ app.post("/api/admin/test-checkout", async (req, res) => {
   }
 });
 
-
 app.post("/api/admin/place-order", async (req, res) => {
-
-  const order = await Order.create(req.body)
+  const order = await Order.create(req.body);
 
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      
+
       line_items: req.body.orderedItems.map((item) => {
-          return {
-            price_data: {
-              currency: "eur",
-              product_data: {
-                name: item.name,
-              },
-              unit_amount: item.price,
+        return {
+          price_data: {
+            currency: "eur",
+            product_data: {
+              name: item.name,
             },
-            quantity: item.quantity,
-          };
-        }),
+            unit_amount: item.price,
+          },
+          quantity: item.quantity,
+        };
+      }),
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/successOrder/?id=${order._id}`,
       cancel_url: `${process.env.CLIENT_URL}/cancelOrder/id=${order._id}`,
@@ -109,8 +111,6 @@ app.post("/api/admin/place-order", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-
-
 
 const port = process.env.PORT || 8080;
 
