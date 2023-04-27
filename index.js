@@ -23,11 +23,7 @@ const app = express();
 // const cors = require("cors")
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://yoga-site-ecommerce.vercel.app",
-      "https://yoga-site-six.vercel.app",
-    ],
+    origin: "*",
   })
 );
 // app.use(
