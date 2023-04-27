@@ -108,7 +108,7 @@ app.post("/api/admin/place-order", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 mongoose
   .connect(process.env.DATABASE, {
