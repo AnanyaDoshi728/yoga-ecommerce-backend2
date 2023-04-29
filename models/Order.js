@@ -29,6 +29,10 @@ const ordersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+     country: {
+        type: String,
+        required: true
+    },
     orderedItems:{
         type: [
             { name: String,
