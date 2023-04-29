@@ -69,7 +69,7 @@ app.post("/api/admin/test-checkout", async (req, res) => {
 
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/success/?id=${booking._id}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel/?id=${booking._id}`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel`,
     });
 
     res.json({ url: session.url });
@@ -99,7 +99,7 @@ app.post("/api/admin/place-order", async (req, res) => {
       }),
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/successOrder/?id=${order._id}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancelOrder/id=${order._id}`,
+      cancel_url: `${process.env.CLIENT_URL}/cancelOrder`,
     });
 
     res.json({ url: session.url });
